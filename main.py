@@ -4,9 +4,7 @@ import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# loading the model from the file
-with open('churn_model.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
+model = pickle.load(open('churn_model.pkl', 'rb'))
 
 st.set_page_config(page_title="Churn Prediction App", page_icon=":bar_chart:")
 
