@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 # loading the model from the file
 with open('churn_model.pkl', 'rb') as model_file:
