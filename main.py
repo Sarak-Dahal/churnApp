@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pickle
-#import seaborn as sns
+import seaborn as sns
 
 # loading the model from the file
 with open('churn_model.pkl', 'rb') as model_file:
@@ -75,12 +75,12 @@ prediction = model.predict(user_input)
 st.markdown('<p class="prediction">Prediction: {}</p>'.format(prediction[0]), unsafe_allow_html=True)
 
 # Correlation analysis
-#st.subheader('Correlation with Churn')
-#with st.expander("Click to see correlation heatmap"):
-#    corr = df.corr()['Churn'].sort_values(ascending=False)
-#    fig, ax = plt.subplots(figsize=(10, 8))
-#    sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5, ax=ax)
-#    st.pyplot(fig)
+st.subheader('Correlation with Churn')
+with st.expander("Click to see correlation heatmap"):
+    corr = df.corr()['Churn'].sort_values(ascending=False)
+    fig, ax = plt.subplots(figsize=(10, 8))
+    sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5, ax=ax)
+    st.pyplot(fig)
 
 # Footer
 st.markdown('<p class="footer">Made with :heart: by Sarak Dahal</p>', unsafe_allow_html=True)
