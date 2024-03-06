@@ -4,11 +4,10 @@ import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load the model from the file
+# loading the model from the file
 with open('churn_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
-# Set page title and icon
 st.set_page_config(page_title="Churn Prediction App", page_icon=":bar_chart:")
 
 # Custom styles and layout
@@ -43,7 +42,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Streamlit app
+# Streamlit app starts
 st.title('Churn Prediction App')
 st.markdown('<p class="header">Churn Prediction App</p>', unsafe_allow_html=True)
 
@@ -66,7 +65,7 @@ def user_input_features():
     features = pd.DataFrame(data, index=[0])
     return features
 
-# Display user input features
+# input features
 user_input = user_input_features()
 st.markdown('<p class="subheader">User Input Features</p>', unsafe_allow_html=True)
 st.write(user_input)
