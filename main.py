@@ -96,7 +96,9 @@ st.markdown('<p class="subheader">User Input Features</p>', unsafe_allow_html=Tr
 st.write(user_input)
 
 # Make predictions
-prediction = model.predict(user_input)
+if st.sidebar.button('Predict'):
+    prediction = model.predict(user_input)
+    st.markdown('<p class="prediction">Prediction: {}</p>'.format(prediction[0]), unsafe_allow_html=True)
 
 st.markdown('<p class="prediction">Prediction: {}</p>'.format(prediction[0]), unsafe_allow_html=True)
 
