@@ -119,20 +119,19 @@ df = pd.DataFrame()
 # Make predictions
 if st.sidebar.button('Predict'):
     prediction = model.predict(user_input)
-    st.markdown('<p class="prediction">Prediction: {}</p>'.format(prediction[0]), unsafe_allow_html=True)
+    # Map the prediction result to the corresponding label
+    prediction_label = 'Churn' if prediction[0] == 1 else 'No churn'
+    st.markdown('<p class="prediction">Prediction: {}</p>'.format(prediction_label), unsafe_allow_html=True)
 
-    # Correlation analysis
-    st.subheader('Correlation with Churn')
-    with st.expander("Click to see correlation heatmap"):
-        if 'Churn' in df.columns:
-            corr = df.corr()['Churn'].sort_values(ascending=False)
-            fig, ax = plt.subplots(figsize=(10, 8))
-            sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5, ax=ax)
-            st.pyplot(fig)
-        else:
-            st.write("The DataFrame does not contain a 'Churn' column.")
+    # Histogram of input features
+    st.subheader('Histogram of Input Features')
+    for col in user_input.columns:
+        fig, ax = plt.subplots()
+        user_input[col].hist(ax=ax, bins=20, edgecolor='black')
+        ax.set_title('Histogram of ' + col)
+        st.pyplot(fig)
 
 
 
 # Footer
-st.markdown('<p class="footer">Made with :heart: by Sarak Dahal</p>', unsafe_allow_html=True)
+st.markdown('<p class="footer">Made with ❤️ by Sarak Dahal</p>', unsafe_allow_html=True)
