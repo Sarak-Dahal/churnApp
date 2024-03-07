@@ -95,8 +95,22 @@ user_input = user_input_features()
 st.markdown('<p class="subheader">User Input Features</p>', unsafe_allow_html=True)
 st.write(user_input)
 
+
+
+# Define the mapping dictionaries
+phone_service_mapping = {'Yes': 1, 'No': 0}
+contract_mapping = {'Month-to-month': 0, 'One year': 1, 'Two year': 2}
+payment_method_mapping = {'N/A': 0, 'Electronic check': 1, 'Mailed check': 2, 'Bank transfer (automatic)': 3, 'Credit card (automatic)': 4}
+
+# Transform the user input
+user_input['Phone Service'] = user_input['Phone Service'].map(phone_service_mapping)
+user_input['Contract'] = user_input['Contract'].map(contract_mapping)
+user_input['Payment Method'] = user_input['Payment Method'].map(payment_method_mapping)
+
+
+
 # Make predictions
-# Initialize prediction with a default value
+# Initialize prediction with a default value 
 prediction = None
 
 # Initialize df with a default value
