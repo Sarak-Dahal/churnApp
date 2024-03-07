@@ -124,10 +124,14 @@ if st.sidebar.button('Predict'):
     # Correlation analysis
     st.subheader('Correlation with Churn')
     with st.expander("Click to see correlation heatmap"):
-        corr = df.corr()['Churn'].sort_values(ascending=False)
-        fig, ax = plt.subplots(figsize=(10, 8))
-        sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5, ax=ax)
-        st.pyplot(fig)
+        if 'Churn' in df.columns:
+            corr = df.corr()['Churn'].sort_values(ascending=False)
+            fig, ax = plt.subplots(figsize=(10, 8))
+            sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5, ax=ax)
+            st.pyplot(fig)
+        else:
+            st.write("The DataFrame does not contain a 'Churn' column.")
+
 
 
 # Footer
