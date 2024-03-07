@@ -1,12 +1,39 @@
+# main.py
 import streamlit as st
 import pandas as pd
 import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.impute import KNNImputer
+import os
 
-#model = pickle.load(open('churn_model.pkl', 'rb'))
+# Check if the model file exists
+if not os.path.exists('trained_model.sav'):
+    # Model training code here
+    df = pd.read_csv("churn_data.csv",index_col='customerID')
+    df_categorical = df.select_dtypes(include=['object'])
+    for col in df_categorical:
+        df[col] = df[col].astype('category')
+        df[col] = df[col].cat.codes
+    imputer = KNNImputer(n_neighbors=5)
+    X_imputed = imputer.fit_transform(df.drop(columns=['Churn']))
+    X_imputed_df = pd.DataFrame(X_imputed, columns=df.drop(columns=['Churn']).columns)
+    X = X_imputed_df
+    y = df['Churn']
+    rf_classifier = RandomForestClassifier()
+    rf_classifier.fit(X, y)
+    with open('trained_model.sav', 'wb') as model_file:
+        pickle.dump(rf_classifier, model_file)
+    y_pred = rf_classifier.predict(X)
+    accuracy = accuracy_score(y, y_pred)
+    print(f"Accuracy: {accuracy*100:.2f}%")
+
+# Load the model
 model = pickle.load(open('trained_model.sav', 'rb'))
 
+# Streamlit app starts
 st.set_page_config(page_title="Churn Prediction App", page_icon=":bar_chart:")
 
 # Custom styles and layout
@@ -41,7 +68,6 @@ st.markdown(
   unsafe_allow_html=True
 )
 
-# Streamlit app starts
 st.title('Churn Prediction App')
 st.markdown('<p class="header">Churn Prediction App</p>', unsafe_allow_html=True)
 
@@ -84,48 +110,3 @@ with st.expander("Click to see correlation heatmap"):
 
 # Footer
 st.markdown('<p class="footer">Made with :heart: by Sarak Dahal</p>', unsafe_allow_html=True)
-
-
-
-this is for model preparing,
-
-# importing required libraries
-import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-import pickle
-from sklearn.impute import KNNImputer
-
-# storing data using pandas
-df = pd.read_csv("churn_data.csv",index_col='customerID')
-df
-
-# handling categorical variables
-df_categorical = df.select_dtypes(include=['object'])
-for col in df_categorical:
-    df[col] = df[col].astype('category')
-    df[col] = df[col].cat.codes
-
-imputer = KNNImputer(n_neighbors=5)
-X_imputed = imputer.fit_transform(df.drop(columns=['Churn']))
-
-# preprocessing data
-X_imputed_df = pd.DataFrame(X_imputed, columns=df.drop(columns=['Churn']).columns)
-
-# features and target variable
-X = X_imputed_df
-y = df['Churn']
-
-rf_classifier = RandomForestClassifier()
-rf_classifier.fit(X, y)
-
-with open('churn_model.pkl', 'wb') as model_file:
-    pickle.dump(rf_classifier, model_file)
-
-filename = 'trained_model.sav'
-pickle.dump(rf_classifier, open(filename, 'wb'))
-y_pred = rf_classifier.predict(X)
-accuracy = accuracy_score(y, y_pred)
-print(f"Accuracy: {accuracy*100:.2f}%")
-
-Make this a single streamlit code with requirement.txt file for streamlit, also we don't need to train model.pkl or trained_model.sav exists we just can continue rest part of the code
