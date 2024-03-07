@@ -96,11 +96,13 @@ st.markdown('<p class="subheader">User Input Features</p>', unsafe_allow_html=Tr
 st.write(user_input)
 
 # Make predictions
+# Initialize prediction with a default value
+prediction = None
+
+# Make predictions
 if st.sidebar.button('Predict'):
     prediction = model.predict(user_input)
     st.markdown('<p class="prediction">Prediction: {}</p>'.format(prediction[0]), unsafe_allow_html=True)
-
-st.markdown('<p class="prediction">Prediction: {}</p>'.format(prediction[0]), unsafe_allow_html=True)
 
 # Correlation analysis
 st.subheader('Correlation with Churn')
